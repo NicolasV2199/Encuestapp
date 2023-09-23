@@ -18,7 +18,7 @@
       <label for="" class="mt-3 fw-bold">Escribe las opciones de respuesta</label>
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Escribe tu opción" aria-describedby="button-addon2" v-model="option" required>
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Agregar opción</button>
+        <button class="btn btn-secondary" type="button" id="button-addon2">Agregar opción</button>
       </div>
     </form>
 
@@ -27,11 +27,12 @@
       <li v-for="(option, index) in options" :key="index">{{ option }}</li>
     </ul>
 
-    <button class="btn btn-encuestapp btn-lg mt-5" @click="console.log(date)">Crear Encuesta</button>
+    <button class="btn btn-encuestapp btn-lg mt-5" @click="createSurvey">Crear Encuesta</button>
   </section>
 </template>
 
 <script>
+/* eslint-disable */
 export default {
 
   data () {
@@ -48,6 +49,28 @@ export default {
     addOption () {
       this.options.push(this.option)
       this.option = ''
+    },
+
+    createSurvey(){
+      this.axios.post('', {
+        name: this.question,
+        expiration_at: this.date,
+      })
+      .then(resp => {
+        this.$swal.fire({
+            title: 'Exito',
+            text: 'Encuesta creada correctamente',
+            icon: 'success',
+            confirmButtonText: '¡Entendido!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.$router.push({name: 'survey-list'})
+            }
+          })
+      })
+      .catch(error => {
+
+      })
     }
 
   }

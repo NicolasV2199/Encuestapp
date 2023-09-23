@@ -76,3 +76,12 @@ export default {
 
 }
 </script>
+
+<style lang="scss" scoped>
+#myChart{
+  width: 90% !important;
+  max-height: 500px;
+  margin: 0 auto;
+  max-width: 900px;
+}
+</style>

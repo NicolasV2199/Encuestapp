@@ -17,3 +17,7 @@ p{
   background-color: #735240 !important;
   color: #fff !important;
 }
+
+.cursor-pointer{
+  cursor: pointer;
+}

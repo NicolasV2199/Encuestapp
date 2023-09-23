@@ -3,7 +3,13 @@
     <h1 class="main-title">EncuestApp</h1>
     <p class="mb-5 fw-bold">Todas las encuestas</p>
 
-    <div class="row">
+    <div class="d-flex justify-content-center" v-if="isLoading">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div class="row animate__animated animate__fadeInLeft" v-else>
       <div class="col-lg-3 col-md-4 col-sm-6" v-for="survey in surveys" :key="survey.id">
         <div class="card my-3">
           <div class="card-header">
@@ -19,7 +25,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
               </svg>
             </span>
-            <span class="card-header-button" @click="deleteSurvey">
+            <span class="card-header-button" @click="onDeleteSurvey">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="25" color="#fff" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -44,16 +50,19 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
 
   data () {
     return {
-      surveys: []
+      surveys: [],
+      isLoading: true,
     }
   },
 
   methods: {
     getSurveys () {
+      this.isLoading = true;
       this.axios.get('https://run.mocky.io/v3/693be6c7-9275-4d3a-92d1-561e8f08c542')
         .then(response => {
           this.surveys = response.data
@@ -61,10 +70,44 @@ export default {
         .catch(error => {
           console.log(error)
         })
+        .finally( ()=> {
+          this.isLoading = false;
+        })
     },
 
     compareDates (expirationDate) {
       return new Date() > new Date(expirationDate)
+    },
+
+    onDeleteSurvey(){
+      this.$swal.fire({
+        title: '¿Estás seguro que deseas eliminar esta encuesta?',
+        text: "¡No podrás revertir los cambios!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Eliminar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteSurvey();
+        }
+      })
+    },
+
+    deleteSurvey(){
+      this.axios.delete('')
+        .then(resp => {
+          this.$swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        })
+        .catch(error => {
+          console.log(error);
+        })
     }
   },
 
