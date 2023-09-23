@@ -1,19 +1,44 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import IndexSurvey from '../views/Surveys/index-survey.vue'
+import DetailSurvey from '../views/Surveys/detail-survey.vue'
+import CreateSurvey from '../views/Surveys/create-survey.vue'
+import AnswerSurvey from '../views/Surveys/answer-survey.vue'
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: '/survey',
+    name: 'survey-list',
+    component: IndexSurvey
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/survey/create',
+    name: 'survey-create',
+    component: CreateSurvey
+  },
+  {
+    path: '/survey-detail/:id',
+    name: 'survey-detail',
+    component: DetailSurvey
+  },
+  /* {
+    path: '/survey-answer/:id',
+    name: 'survey-answer',
+    component: AnswerSurvey
+  }, */
+  {
+    path: '/survey-answer/:id',
+    name: 'survey-answer',
+    component: AnswerSurvey,
+    props: (route) => {
+      return {
+        id: route.params.id
+      }
+    }
+  },
+  {
+    path: '',
+    name: 'survey-redirect',
+    redirect: { name: 'survey-list' }
   }
 ]
 

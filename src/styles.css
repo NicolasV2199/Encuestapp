@@ -1,0 +1,19 @@
+*{
+  font-family: 'Montserrat', sans-serif;
+}
+
+.main-title{
+  font-weight: bold;
+  color: #8c6057;
+  font-size: 50px;
+  text-align: center;
+}
+
+p{
+  color: #727973;
+}
+
+.btn-encuestapp{
+  background-color: #735240 !important;
+  color: #fff !important;
+}
