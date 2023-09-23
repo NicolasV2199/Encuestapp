@@ -13,9 +13,9 @@
     </div>
 
     <div v-else class="options-container">
-      <div class="form-check" v-for="(option, index) in survey.options" :key="option.id">
-        <input class="form-check-input" type="radio" name="flexRadioDefault"
-          :checked="index == 0 && false">
+      <div class="form-check" v-for="(option) in survey.options" :key="option.id">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" v-model="radioResponse" :value="option.id"
+          required>
         <label class="form-check-label">
           {{ option.name }}
         </label>
@@ -30,7 +30,6 @@
         <button class="btn btn-secondary">Ver resultados</button>
       </div>
     </div>
-    <h3>Selected: {{ selectedCheck }}</h3>
   </section>
 </template>
 
@@ -63,25 +62,23 @@ export default {
     vote () {
 
       this.axios.post('https://run.mocky.io/v3/693be6c7-9275-4d3a-92d1-561e8f08c542',{
-
+        options: this.survey.multiple ? this.selectedCheck : this.radioResponse
       })
         .then(response => {
-          this.survey = response.data
+          this.$swal.fire({
+            title: 'Exito',
+            text: 'Encuesta votada correctamente',
+            icon: 'success',
+            confirmButtonText: '¡Entendido!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.$router.push({name: 'survey-list'})
+            }
+          })
         })
         .catch(error => {
           console.log(error)
         })
-
-      this.$swal.fire({
-        title: 'Exito',
-        text: 'Encuesta votada correctamente',
-        icon: 'success',
-        confirmButtonText: '¡Entendido!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log('confirmado')
-        }
-      })
     },
 
     addOption(id){
@@ -97,7 +94,6 @@ export default {
       this.axios.get('https://run.mocky.io/v3/c0ee74fb-1270-4c0f-880f-f762faea2c68')
         .then(response => {
           this.survey = response.data
-          this.survey.multiple = false;
         })
         .catch(error => {
           console.log(error)
