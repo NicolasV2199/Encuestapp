@@ -1,5 +1,5 @@
 <template>
-  <h1>Resultados de la encuesta</h1>
+  <h1 class="main-title mb-3">Resultados de la encuesta</h1>
   <canvas id="myChart"></canvas>
 </template>
 
@@ -44,8 +44,8 @@ export default {
         data: {
           labels: this.labels,
           datasets: [{
-            label: 'Total de votos: ',
-            data: [1,2,3,4],
+            label: 'Total de votos',
+            data: this.data,
             borderWidth: 1
           }]
         },
@@ -59,9 +59,10 @@ export default {
       }); 
     },
     getSurvey(){
-      this.axios.get('https://run.mocky.io/v3/c0ee74fb-1270-4c0f-880f-f762faea2c68')
+      this.axios.get('https://run.mocky.io/v3/78bad750-2596-4e2f-92c3-9a113d71ae15')
         .then(response => {
           this.survey = response.data
+          this.createChart()
         })
         .catch(error => {
           console.log(error)
@@ -71,10 +72,6 @@ export default {
 
   created(){
     this.getSurvey()
-  },
-
-  mounted(){
-    this.createChart()
   }
 
 }
