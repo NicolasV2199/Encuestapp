@@ -18,13 +18,13 @@ const routes = [
   {
     path: '/survey-detail/:id',
     name: 'survey-detail',
-    component: DetailSurvey
+    component: DetailSurvey,
+    props: (route) => {
+      return {
+        id: route.params.id
+      }
+    }
   },
-  /* {
-    path: '/survey-answer/:id',
-    name: 'survey-answer',
-    component: AnswerSurvey
-  }, */
   {
     path: '/survey-answer/:id',
     name: 'survey-answer',
